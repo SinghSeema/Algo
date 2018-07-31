@@ -15,6 +15,7 @@ class Node {
     bool find(int data);
     Node* delete_node(int data);
     void inorder();
+    Node* min();
     
 };
 void Node::insert(int data) {
@@ -41,7 +42,12 @@ void Node::inorder() {
         right->inorder();
         
 }
-
+Node* Node::min() {
+    if (left == NULL) {
+        return this;
+    }
+    return left->min();
+}
 bool Node::find(int data) {
     if (data == this->data)
         return true;
@@ -79,15 +85,20 @@ Node* Node::delete_node(int data) {
             delete this;
             return NULL;
         }
-        else if (left != NULL) {
+        else if (left != NULL && right == NULL) {
             Node * tmp = this->left;
             delete this;
             return tmp;
         }
-        else if (right != NULL) {
+        else if (right != NULL && left == NULL) {
             Node* tmp = this->right;
             delete this;
             return tmp;
+        }
+        else {
+            Node* minNode = right->min();
+            this->data = minNode->data;
+            right = right->delete_node(minNode->data);
         }
         
     }
@@ -102,6 +113,7 @@ int main() {
 	Tree->insert(1);
 	Tree->insert(8);
 	Tree->insert(7);
+	Tree->insert(9);
 	Tree->inorder();
 	Tree->delete_node(8);
 	cout<<endl<<"Tree Traversal after delete"<<endl;
