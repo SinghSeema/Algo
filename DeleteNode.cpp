@@ -102,6 +102,7 @@ Node* Node::delete_node(int data) {
         }
         
     }
+    return this;
 
 }
 
